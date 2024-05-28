@@ -27,6 +27,13 @@ POST http://108.143.187.97:5000/api/prompt
 4. Implement the feature and create a merge request.
 5. Test the feature.
 
+## Repo Interaction
+1. Fork the Repo
+2. Implement the tasks mentioned above on your fork
+3. Commit the changes
+4. Create a Pull Request of these changes.
+5. Add a Description of your changes made to the PR.
+
 ## Resources
 
 - [ollama](https://github.com/ollama/ollama?tab=readme-ov-file)
