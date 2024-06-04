@@ -1,0 +1,32 @@
+﻿<Window x:Class="aiChatterBox.inputBox"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:aiChatterBox"
+        ResizeMode="NoResize"
+        mc:Ignorable="d"
+        Title="Enter Ollama Host Address" Height="230" Width="300">
+    <Grid>
+        <Grid.ColumnDefinitions>
+<ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackPanel>
+            <Label Margin="20,10,20,0">Enter Ollama Host:</Label>
+            <Label Margin="20,-5,20,0">The default is "http://localhost:11434"</Label>
+            <TextBox x:Name="textBox_InputNewHost"
+                     Grid.Row="0"
+                     Grid.Column="0"
+                     Height="30"
+                     Margin="20,5,20,10" />
+        </StackPanel>
+        <Button x:Name="button_ConfirmChange"
+                Content="Confirm" Margin="20,10,20,10" Grid.Column="0" Grid.Row="1"
+                Height="50"
+                Click="button_ConfirmChange_Click" />
+    </Grid>
+</Window>
