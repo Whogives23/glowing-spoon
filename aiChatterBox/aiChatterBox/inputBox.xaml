@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:aiChatterBox"
         ResizeMode="NoResize"
         mc:Ignorable="d"
-        Title="Enter Ollama Host" Height="180" Width="300">
+        Title="Enter Ollama Host Address" Height="230" Width="300">
     <Grid>
         <Grid.ColumnDefinitions>
 <ColumnDefinition Width="*" />
@@ -17,6 +17,7 @@
         </Grid.RowDefinitions>
         <StackPanel>
             <Label Margin="20,10,20,0">Enter Ollama Host:</Label>
+            <Label Margin="20,-5,20,0">The default is "http://localhost:11434"</Label>
             <TextBox x:Name="textBox_InputNewHost"
                      Grid.Row="0"
                      Grid.Column="0"

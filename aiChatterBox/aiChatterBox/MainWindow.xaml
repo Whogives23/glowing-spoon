@@ -4,28 +4,61 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:aiChatterBox"
+        ResizeMode="NoResize"
         mc:Ignorable="d"
         Title="Magical Spoon Chatter Box"
-        Height="450"
-        Width="800">
+        Height="550"
+        Width="750">
     <Grid>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="5*" />
+                <RowDefinition Height="7*" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="3*" />
             </Grid.ColumnDefinitions>
+            <Grid Grid.Row="0"
+                  Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="0.4*" />
+                    <RowDefinition Height="5*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Button Grid.Row="0"
+                        Grid.Column="0"
+                        Panel.ZIndex="1"
+                        Margin="15"
+                        Height="30"
+                        Content="New Chat"
+                        x:Name="button_NewChat"
+                        Click="button_NewChat_Click"></Button>
+                <Label Grid.Column="0"
+                       Grid.Row="1"
+                       Margin="45,0,45,0"
+                       FontSize="15">Past Chats</Label> 
+                <ListView x:Name="listView_PastChats"
+                          Grid.Row="2"
+                          Grid.Column="0"
+                          Margin="15"
+                          SelectionChanged="listView_PastChats_SelectionChanged"
+                          BorderThickness="1"
+                          BorderBrush="Gray">
+                </ListView>
+            </Grid>
             <Button Grid.Column="0" Grid.Row="1" Margin="15" Content="Change Ollama Path" Name="button_changePath" Click="button_changePath_Click"></Button>
             <ListView x:Name="listView_currentChat"
                       Grid.Row="0"
                       Grid.Column="1"
-                      Margin="10"
+                      Margin="15,18,15,15"
                       Padding="10"
                       ScrollViewer.CanContentScroll="False"
-                      ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                      ScrollViewer.VerticalScrollBarVisibility="Auto"
                       BorderThickness="0"
                       Background="Transparent">
                 <ListBox.ItemsPanel>
