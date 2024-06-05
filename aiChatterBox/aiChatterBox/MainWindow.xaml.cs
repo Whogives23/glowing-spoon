@@ -27,6 +27,11 @@ namespace aiChatterBox
         //To Indicate Start/Stop of Loading Animation
         private CancellationTokenSource currentCancellationTokenSource = null;
 
+        //Colours for Chat Messages
+        public Brush userMessageColour = Brushes.Teal;
+        public Brush llamaMessageColour = Brushes.DarkBlue;
+        public Brush errorMessageColour = Brushes.Crimson;
+
         //File to Store Chats
         private string chatsFilePath = "pastChats.json";
 
@@ -57,7 +62,7 @@ namespace aiChatterBox
 
             //Add User Input to Chat
             chats[currentChatIndex].Add($"ME: {inputPrompt}");
-            addMessageToListView("ME: " + inputPrompt, Brushes.Pink, HorizontalAlignment.Right);
+            addMessageToListView("ME: " + inputPrompt, userMessageColour, HorizontalAlignment.Right);
             textBox_PromptInput.Text = "";
 
             // Start Loading Animation
@@ -68,17 +73,18 @@ namespace aiChatterBox
             currentCancellationTokenSource = new CancellationTokenSource();
             var token = currentCancellationTokenSource.Token;
             showLoadingAnimation(token);
-
+            string aiOutput = "Error: An error has occured";
             //Get Response From Ollama, or Show Error
             try
             {
-                string aiOutput = await promptOllamaAsync(inputPrompt);
+                aiOutput = await promptOllamaAsync(inputPrompt);
                 chats[currentChatIndex].Add($"AI: {aiOutput}");
-                addMessageToListView("AI: " + aiOutput, Brushes.LightBlue, HorizontalAlignment.Left);
+                addMessageToListView("AI: " + aiOutput, llamaMessageColour, HorizontalAlignment.Left);
             }
             catch (Exception ex)
             {
-                addMessageToListView($"Error: {ex.Message}", Brushes.Red, HorizontalAlignment.Left);
+                chats[currentChatIndex].Add($"Error: {ex.Message}");
+                addMessageToListView($"Error: {ex.Message}", errorMessageColour, HorizontalAlignment.Left);
             }
             finally
             {
@@ -107,7 +113,7 @@ namespace aiChatterBox
                 chats = JsonConvert.DeserializeObject<List<List<string>>>(chatsJson);
                 for (int i = 0; i < chats.Count; i++)
                 {
-                    listView_PastChats.Items.Add($"Chat {i + 1}");
+                    listView_PastChats.Items.Add($"             Chat {i + 1}");
                 }
             }
         }
@@ -148,6 +154,7 @@ namespace aiChatterBox
                 Text = message,
                 Width = 450,
                 Background = background,
+                Foreground = Brushes.White,
                 TextWrapping = TextWrapping.Wrap,
                 Margin = new Thickness(5),
                 Padding = new Thickness(10),
@@ -215,15 +222,15 @@ namespace aiChatterBox
                 {
                     //Populate User Message
                     case var _ when message.StartsWith("ME:"):
-                        addMessageToListView(message, Brushes.Pink, HorizontalAlignment.Right);
+                        addMessageToListView(message, userMessageColour, HorizontalAlignment.Right);
                         break;
                     //Populate AI Message
                     case var _ when message.StartsWith("AI:"):
-                        addMessageToListView(message, Brushes.LightBlue, HorizontalAlignment.Left);
+                        addMessageToListView(message, llamaMessageColour, HorizontalAlignment.Left);
                         break;
                     //Populate Error Message
                     case var _ when message.StartsWith("Error:"):
-                        addMessageToListView(message, Brushes.Red, HorizontalAlignment.Left);
+                        addMessageToListView(message, errorMessageColour, HorizontalAlignment.Left);
                         break;
                 }
             }
@@ -237,7 +244,7 @@ namespace aiChatterBox
 
             //Add the new chat to the past chats list and select it
             int numChats = listView_PastChats.Items.Count + 1;
-            string newChatLabel = $"Chat {numChats}";
+            string newChatLabel = $"             Chat {numChats}";
             listView_PastChats.Items.Add(newChatLabel);
             listView_PastChats.SelectedItem = newChatLabel;
         }

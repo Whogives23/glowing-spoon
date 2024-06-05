@@ -18,3 +18,6 @@ C:\Users\Sauraav\Documents\GitHub\glowing-spoon\aiChatterBox\aiChatterBox\obj\De
 C:\Users\Sauraav\Documents\GitHub\glowing-spoon\aiChatterBox\aiChatterBox\obj\Debug\aiChatterBox.pdb
 C:\Users\Sauraav\Documents\GitHub\glowing-spoon\aiChatterBox\aiChatterBox\obj\Debug\inputBox.g.cs
 C:\Users\Sauraav\Documents\GitHub\glowing-spoon\aiChatterBox\aiChatterBox\obj\Debug\inputBox.baml
+C:\Users\Sauraav\Documents\GitHub\glowing-spoon\aiChatterBox\aiChatterBox\obj\Debug\Theme\TextBoxTheme.baml
+C:\Users\Sauraav\Documents\GitHub\glowing-spoon\aiChatterBox\aiChatterBox\obj\Debug\App.baml
+C:\Users\Sauraav\Documents\GitHub\glowing-spoon\aiChatterBox\aiChatterBox\obj\Debug\Theme\ButtonTheme.baml
