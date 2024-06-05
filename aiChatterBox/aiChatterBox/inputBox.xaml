@@ -6,27 +6,42 @@
         xmlns:local="clr-namespace:aiChatterBox"
         ResizeMode="NoResize"
         mc:Ignorable="d"
-        Title="Enter Ollama Host Address" Height="230" Width="300">
-    <Grid>
-        <Grid.ColumnDefinitions>
-<ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <StackPanel>
-            <Label Margin="20,10,20,0">Enter Ollama Host:</Label>
-            <Label Margin="20,-5,20,0">The default is "http://localhost:11434"</Label>
-            <TextBox x:Name="textBox_InputNewHost"
-                     Grid.Row="0"
-                     Grid.Column="0"
-                     Height="30"
-                     Margin="20,5,20,10" />
-        </StackPanel>
-        <Button x:Name="button_ConfirmChange"
-                Content="Confirm" Margin="20,10,20,10" Grid.Column="0" Grid.Row="1"
-                Height="50"
-                Click="button_ConfirmChange_Click" />
-    </Grid>
+        Title="Enter Ollama Host Address"
+        Height="230"
+        Width="300"
+        WindowStartupLocation="CenterScreen"
+        Icon="Icon/ollama_official_logo.png"
+        Background="#126F85">
+    <Border CornerRadius="0,0,20,20"
+            Background="#126F85">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Row="1">
+                <Label Margin="20,10,20,0"
+                       Foreground="White">Enter Ollama Host:</Label>
+                <Label Margin="20,-5,20,0"
+                       Foreground="White">The default is "http://localhost:11434"</Label>
+                <TextBox x:Name="textBox_InputNewHost"
+                         Grid.Row="0"
+                         Grid.Column="0"
+                         Height="30"
+                         Background="#79CCD6"
+                         Margin="20,5,20,10"
+                         Style="{StaticResource RoundedTextBox}" />
+                <Button x:Name="button_ConfirmChange"
+                        Content="Confirm"
+                        Margin="20,10,20,10"
+                        Height="50"
+                        Click="button_ConfirmChange_Click"
+                        Style="{StaticResource RoundedButton}" />
+            </StackPanel>
+        </Grid>
+    </Border>
 </Window>

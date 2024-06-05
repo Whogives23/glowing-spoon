@@ -7,8 +7,9 @@
         xmlns:local="clr-namespace:aiChatterBox"
         ResizeMode="NoResize"
         mc:Ignorable="d"
+WindowStartupLocation="CenterScreen"
         Title="Magical Spoon Chatter Box - Sauraav Jayrajh"
-        Background="Transparent"
+        Background="#126F85"
         Height="550"
         Width="800">
     <Border CornerRadius="0,0,20,20"
