@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace aiChatterBox
@@ -41,9 +42,10 @@ namespace aiChatterBox
             LoadChatsFromFile();
         }
 
-        //Handles Submission of Prompt
-        private async void button_PromptSubmit_Click(object sender, RoutedEventArgs e)
+        //Reuseable Method to Handle Submission of Prompt
+        public async void submitPrompt()
         {
+
             //Get and Validate Input
             string inputPrompt = textBox_PromptInput.Text;
             if (string.IsNullOrWhiteSpace(inputPrompt))
@@ -57,7 +59,7 @@ namespace aiChatterBox
             {
                 currentChatIndex = chats.Count;
                 chats.Add(new List<string>());
-                listView_PastChats.Items.Add($"Chat 1");
+                listView_PastChats.Items.Add($"             Chat 1");
             }
 
             //Add User Input to Chat
@@ -95,6 +97,12 @@ namespace aiChatterBox
                 //Save chats to file after each interaction
                 SaveChatsToFile();
             }
+        }
+
+        //Button Click to Submit Prompt
+        private async void button_PromptSubmit_Click(object sender, RoutedEventArgs e)
+        {
+            submitPrompt();
         }
 
         // Save chats to file
@@ -247,6 +255,30 @@ namespace aiChatterBox
             string newChatLabel = $"             Chat {numChats}";
             listView_PastChats.Items.Add(newChatLabel);
             listView_PastChats.SelectedItem = newChatLabel;
+        }
+
+        //Clear All Chat History
+        private void button_ClearChats_Click(object sender, RoutedEventArgs e)
+        {
+            chats.Clear();
+            listView_currentChat.Items.Clear();
+            listView_PastChats.Items.Clear(); SaveChatsToFile();
+            currentChatIndex = -1;
+        }
+
+        //Clear Searchbox
+        private void textBox_PromptInput_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            textBox_PromptInput.Clear();
+        }
+
+        //If Enter is Pressed, Submit Text
+        private void textBox_PromptInput_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                submitPrompt();
+            }
         }
     }
 }
