@@ -57,5 +57,14 @@ namespace aiChatterBox
                 textBox_InputNewHost.Text = JsonSerializer.Deserialize<string>(configContent);
             }
         }
+
+        //Override Default Host Config
+        private void button_ChangeDefault_Click(object sender, RoutedEventArgs e)
+        {
+            string configFile = configDirectory + "default_address.json";
+            string configContent = JsonSerializer.Serialize(textBox_InputNewHost.Text);
+            File.WriteAllText(configFile, configContent);
+
+        }
     }
 }

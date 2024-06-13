@@ -21,6 +21,8 @@ namespace aiChatterBox
         private static readonly HttpClient client = new HttpClient();
         //Adress of Ollama Running On Machine, Change if Needed
         public static string localhost;
+        //Store Current Chat
+        private List<string> _chat;
         //Store Chats
         private List<List<string>> chats = new List<List<string>>();
         //Store current chat index
@@ -49,19 +51,24 @@ namespace aiChatterBox
         {
             string configDirectory = Path.Combine(Directory.GetCurrentDirectory(), "configs");
             string configFile = Path.Combine(configDirectory, "default_address.json");
-
+            string configFile_OG = Path.Combine(configDirectory, "original_address_dont_edit.json");
             // Check if Directory Exists, if Not, Create it
             if (!Directory.Exists(configDirectory))
             {
                 Directory.CreateDirectory(configDirectory);
             }
-
             // Check if Config File Exists, if Not, Create it with the Default Value
             if (!File.Exists(configFile))
             {
                 string defaultAddress = "http://localhost:11434";
                 string configContent = JsonSerializer.Serialize(defaultAddress);
                 File.WriteAllText(configFile, configContent);
+            }
+            if (!File.Exists(configFile_OG))
+            {
+                string defaultAddress = "http://localhost:11434";
+                string configContent = JsonSerializer.Serialize(defaultAddress);
+                File.WriteAllText(configFile_OG, configContent);
             }
         }
 
@@ -76,16 +83,17 @@ namespace aiChatterBox
                 return;
             }
 
-            //Ensure current chat exists
-            if (currentChatIndex == -1)
+            //Ensure Current Chat Exists
+            if (_chat == null)
             {
                 currentChatIndex = chats.Count;
-                chats.Add(new List<string>());
+                _chat = new List<string>();
+                chats.Add(_chat);
                 listView_PastChats.Items.Add($"             Chat {currentChatIndex + 1}");
             }
 
             //Add User Input to Chat
-            chats[currentChatIndex].Add($"ME: {inputPrompt}");
+            _chat.Add($"ME: {inputPrompt}");
             addMessageToListView("ME: " + inputPrompt, userMessageColour, HorizontalAlignment.Right);
             textBox_PromptInput.Text = "";
 
@@ -102,12 +110,12 @@ namespace aiChatterBox
             try
             {
                 aiOutput = await promptOllamaAsync(inputPrompt);
-                chats[currentChatIndex].Add($"AI: {aiOutput}");
+                _chat.Add($"AI: {aiOutput}");
                 addMessageToListView("AI: " + aiOutput, llamaMessageColour, HorizontalAlignment.Left);
             }
             catch (Exception ex)
             {
-                chats[currentChatIndex].Add($"Error: {ex.Message}");
+                _chat.Add($"Error: {ex.Message}");
                 addMessageToListView($"Error: {ex.Message}", errorMessageColour, HorizontalAlignment.Left);
             }
             finally
@@ -127,14 +135,14 @@ namespace aiChatterBox
             await submitPrompt();
         }
 
-        // Save chats to file
+        // Save Chats to File
         private void saveChatsToFile()
         {
             string chatsJson = JsonSerializer.Serialize(chats);
             File.WriteAllText(chatsFilePath, chatsJson);
         }
 
-        // Load chats from file
+        // Load Chats from File
         private void loadChatsFromFile()
         {
             if (File.Exists(chatsFilePath))
@@ -148,10 +156,10 @@ namespace aiChatterBox
             }
         }
 
-        // Load config from file
+        // Load Default Config from File
         private void loadConfigFromFile()
         {
-            string configFilePath = "config.json";
+            string configFilePath = Directory.GetCurrentDirectory() + "\\configs\\" + "default_address.json";
             if (File.Exists(configFilePath))
             {
                 string configJson = File.ReadAllText(configFilePath);
@@ -254,16 +262,20 @@ namespace aiChatterBox
             ib.ShowDialog();
         }
 
+        //When the past chats list selection changes
         private void listView_PastChats_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (listView_PastChats.SelectedItem == null)
             {
                 return;
             }
+
             //Set current chat index and refresh chat view
             currentChatIndex = listView_PastChats.SelectedIndex;
+            _chat = chats[currentChatIndex];
+
             listView_currentChat.Items.Clear();
-            foreach (var message in chats[currentChatIndex])
+            foreach (var message in _chat)
             {
                 switch (message)
                 {
@@ -271,10 +283,12 @@ namespace aiChatterBox
                     case var _ when message.StartsWith("ME:"):
                         addMessageToListView(message, userMessageColour, HorizontalAlignment.Right);
                         break;
+
                     //Populate AI Message
                     case var _ when message.StartsWith("AI:"):
                         addMessageToListView(message, llamaMessageColour, HorizontalAlignment.Left);
                         break;
+
                     //Populate Error Message
                     case var _ when message.StartsWith("Error:"):
                         addMessageToListView(message, errorMessageColour, HorizontalAlignment.Left);
@@ -287,7 +301,8 @@ namespace aiChatterBox
         {
             //Create a New Chat and Clear the Current Chat View
             currentChatIndex = chats.Count;
-            chats.Add(new List<string>());
+            _chat = new List<string>();
+            chats.Add(_chat);
 
             //Add the new chat to the past chats list and select it
             int numChats = listView_PastChats.Items.Count + 1;
@@ -300,6 +315,7 @@ namespace aiChatterBox
         private void button_ClearChats_Click(object sender, RoutedEventArgs e)
         {
             chats.Clear();
+            _chat = null;
             listView_currentChat.Items.Clear();
             listView_PastChats.Items.Clear();
             saveChatsToFile();
