@@ -5,7 +5,7 @@
 
 ---
 
-## Developer Contact Details:
+## Developer Contact Details: 
 
 - **Phone:** 071 924 4175
 - **Email:** sauraavjayrajh@gmail.com
@@ -111,8 +111,10 @@ Upon running the application, you will see the main interface which includes the
 
 ---
 
-## Demo:
+## Demos:
 
+[Demo of Initial Attempt](https://github.com/Saupernova13/glowing-spoon/blob/main/docs/Sauraav_Jayrajh_Derivco_MagicSpoon_Demo.mp4)
 
+[Demo of Updated and Requested Features](https://github.com/Saupernova13/glowing-spoon/blob/main/docs/Sauraav_Jayrajh_Derivco_MagicSpoon_Demo_2_Requested_Changes.mp4)
 
 ---
