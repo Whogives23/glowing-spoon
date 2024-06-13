@@ -219,7 +219,7 @@ namespace aiChatterBox
         }
 
         //Display Loading Animation
-        private async void showLoadingAnimation(CancellationToken token)
+        private async Task showLoadingAnimation(CancellationToken token)
         {
             //Store Animation Frames
             string[] loadingStages = new string[] { ".", "..", "...", "...." };
