@@ -1,11 +1,11 @@
 ﻿//Sauraav Jayrajh
 //sauraavjayrajh@gmail.com
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Text;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -39,8 +39,30 @@ namespace aiChatterBox
         public MainWindow()
         {
             InitializeComponent();
-            LoadConfigFromFile();
-            LoadChatsFromFile();
+            loadConfigFromFile();
+            loadChatsFromFile();
+            createDefaultConfig();
+        }
+
+        //Method to Create Default Config FIle
+        public static void createDefaultConfig()
+        {
+            string configDirectory = Path.Combine(Directory.GetCurrentDirectory(), "configs");
+            string configFile = Path.Combine(configDirectory, "default_address.json");
+
+            // Check if Directory Exists, if Not, Create it
+            if (!Directory.Exists(configDirectory))
+            {
+                Directory.CreateDirectory(configDirectory);
+            }
+
+            // Check if Config File Exists, if Not, Create it with the Default Value
+            if (!File.Exists(configFile))
+            {
+                string defaultAddress = "http://localhost:11434";
+                string configContent = JsonSerializer.Serialize(defaultAddress);
+                File.WriteAllText(configFile, configContent);
+            }
         }
 
         //Reuseable Method to Handle Submission of Prompt
@@ -95,7 +117,7 @@ namespace aiChatterBox
                 currentCancellationTokenSource = null;
 
                 //Save chats to file after each interaction
-                SaveChatsToFile();
+                saveChatsToFile();
             }
         }
 
@@ -106,19 +128,19 @@ namespace aiChatterBox
         }
 
         // Save chats to file
-        private void SaveChatsToFile()
+        private void saveChatsToFile()
         {
-            string chatsJson = JsonConvert.SerializeObject(chats);
+            string chatsJson = JsonSerializer.Serialize(chats);
             File.WriteAllText(chatsFilePath, chatsJson);
         }
 
         // Load chats from file
-        private void LoadChatsFromFile()
+        private void loadChatsFromFile()
         {
             if (File.Exists(chatsFilePath))
             {
                 string chatsJson = File.ReadAllText(chatsFilePath);
-                chats = JsonConvert.DeserializeObject<List<List<string>>>(chatsJson);
+                chats = JsonSerializer.Deserialize<List<List<string>>>(chatsJson);
                 for (int i = 0; i < chats.Count; i++)
                 {
                     listView_PastChats.Items.Add($"             Chat {i + 1}");
@@ -127,13 +149,13 @@ namespace aiChatterBox
         }
 
         // Load config from file
-        private void LoadConfigFromFile()
+        private void loadConfigFromFile()
         {
             string configFilePath = "config.json";
             if (File.Exists(configFilePath))
             {
                 string configJson = File.ReadAllText(configFilePath);
-                localhost = JsonConvert.DeserializeObject<string>(configJson);
+                localhost = JsonSerializer.Deserialize<string>(configJson);
             }
             else
             {
@@ -144,7 +166,7 @@ namespace aiChatterBox
         //Calling Ollama
         private async Task<string> promptOllamaAsync(string userPrompt)
         {
-            //Operation to Attach to Ollama host
+            //Attach to Ollama host
             string path = "/api/generate";
             string apiUrl = localhost + path;
 
@@ -157,15 +179,17 @@ namespace aiChatterBox
             };
 
             //Format and Send Request
-            var json = JsonConvert.SerializeObject(requestBody);
+            var json = JsonSerializer.Serialize(requestBody);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await client.PostAsync(apiUrl, content);
             response.EnsureSuccessStatusCode();
 
             //Return Response
             string responseString = await response.Content.ReadAsStringAsync();
-            dynamic jsonResponse = JsonConvert.DeserializeObject<dynamic>(responseString);
-            return jsonResponse.response;
+            JsonDocument document = JsonDocument.Parse(responseString);
+            JsonElement root = document.RootElement;
+            string aiResponse = root.GetProperty("response").GetString();
+            return aiResponse;
         }
 
         //Add Message Block to Chat ListView

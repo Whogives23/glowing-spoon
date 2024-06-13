@@ -1,7 +1,7 @@
 ﻿//Sauraav Jayrajh
 //sauraavjayrajh@gmail.com
 using Microsoft.Win32;
-using Newtonsoft.Json;
+using System.Text.Json;
 using System.IO;
 using System.Windows;
 
@@ -39,7 +39,7 @@ namespace aiChatterBox
             if (result == true)
             {
                 string configFile = saveFileDialog.FileName;
-                string configContent = JsonConvert.SerializeObject(textBox_InputNewHost.Text);
+                string configContent = JsonSerializer.Serialize(textBox_InputNewHost.Text);
                 File.WriteAllText(configFile, configContent);
             }
         }
@@ -54,7 +54,7 @@ namespace aiChatterBox
             if (openFileDialog.ShowDialog() == true)
             {
                 string configContent = File.ReadAllText(openFileDialog.FileName);
-                textBox_InputNewHost.Text = JsonConvert.DeserializeObject<string>(configContent);
+                textBox_InputNewHost.Text = JsonSerializer.Deserialize<string>(configContent);
             }
         }
     }
