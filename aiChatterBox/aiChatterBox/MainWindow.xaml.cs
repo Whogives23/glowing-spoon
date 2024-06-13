@@ -302,7 +302,7 @@ namespace aiChatterBox
             chats.Clear();
             listView_currentChat.Items.Clear();
             listView_PastChats.Items.Clear();
-            SaveChatsToFile();
+            saveChatsToFile();
             currentChatIndex = -1;
         }
 
