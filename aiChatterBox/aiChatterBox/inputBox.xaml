@@ -7,10 +7,9 @@
         ResizeMode="NoResize"
         mc:Ignorable="d"
         Title="Enter Ollama Host Address"
-        Height="230"
+        Height="300"
         Width="300"
         WindowStartupLocation="CenterScreen"
-        Icon="Icon/ollama_official_logo.png"
         Background="#126F85">
     <Border CornerRadius="0,0,20,20"
             Background="#126F85">
@@ -35,6 +34,31 @@
                          Background="#79CCD6"
                          Margin="20,5,20,10"
                          Style="{StaticResource RoundedTextBox}" />
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Button x:Name="button_SaveConfig"
+                            Content="Save Config"
+                            Margin="20,10,5,10"
+                            Height="50"
+                            Grid.Column="0"
+                            Grid.Row="0"
+                            Click="button_SaveConfig_Click"
+                            Style="{StaticResource RoundedButton}" />
+                    <Button x:Name="button_LoadConfig"
+                            Content="Load Config"
+                            Margin="5,10,20,10"
+                            Grid.Column="1"
+                            Grid.Row="0"
+                            Height="50"
+                            Click="button_LoadConfig_Click"
+                            Style="{StaticResource RoundedButton}" />
+                </Grid>
                 <Button x:Name="button_ConfirmChange"
                         Content="Confirm"
                         Margin="20,10,20,10"

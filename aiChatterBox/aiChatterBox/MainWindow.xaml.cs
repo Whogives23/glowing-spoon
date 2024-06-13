@@ -20,7 +20,7 @@ namespace aiChatterBox
         //Client to Handle API Interactions
         private static readonly HttpClient client = new HttpClient();
         //Adress of Ollama Running On Machine, Change if Needed
-        public static string localhost = "http://localhost:11434";
+        public static string localhost;
         //Store Chats
         private List<List<string>> chats = new List<List<string>>();
         //Store current chat index
@@ -39,13 +39,13 @@ namespace aiChatterBox
         public MainWindow()
         {
             InitializeComponent();
+            LoadConfigFromFile();
             LoadChatsFromFile();
         }
 
         //Reuseable Method to Handle Submission of Prompt
-        public async void submitPrompt()
+        public async Task submitPrompt()
         {
-
             //Get and Validate Input
             string inputPrompt = textBox_PromptInput.Text;
             if (string.IsNullOrWhiteSpace(inputPrompt))
@@ -59,7 +59,7 @@ namespace aiChatterBox
             {
                 currentChatIndex = chats.Count;
                 chats.Add(new List<string>());
-                listView_PastChats.Items.Add($"             Chat 1");
+                listView_PastChats.Items.Add($"             Chat {currentChatIndex + 1}");
             }
 
             //Add User Input to Chat
@@ -102,7 +102,7 @@ namespace aiChatterBox
         //Button Click to Submit Prompt
         private async void button_PromptSubmit_Click(object sender, RoutedEventArgs e)
         {
-            submitPrompt();
+            await submitPrompt();
         }
 
         // Save chats to file
@@ -123,6 +123,21 @@ namespace aiChatterBox
                 {
                     listView_PastChats.Items.Add($"             Chat {i + 1}");
                 }
+            }
+        }
+
+        // Load config from file
+        private void LoadConfigFromFile()
+        {
+            string configFilePath = "config.json";
+            if (File.Exists(configFilePath))
+            {
+                string configJson = File.ReadAllText(configFilePath);
+                localhost = JsonConvert.DeserializeObject<string>(configJson);
+            }
+            else
+            {
+                localhost = "http://localhost:11434";
             }
         }
 
@@ -149,7 +164,7 @@ namespace aiChatterBox
 
             //Return Response
             string responseString = await response.Content.ReadAsStringAsync();
-            dynamic jsonResponse = JsonConvert.DeserializeObject(responseString);
+            dynamic jsonResponse = JsonConvert.DeserializeObject<dynamic>(responseString);
             return jsonResponse.response;
         }
 
@@ -262,7 +277,8 @@ namespace aiChatterBox
         {
             chats.Clear();
             listView_currentChat.Items.Clear();
-            listView_PastChats.Items.Clear(); SaveChatsToFile();
+            listView_PastChats.Items.Clear();
+            SaveChatsToFile();
             currentChatIndex = -1;
         }
 
@@ -273,11 +289,11 @@ namespace aiChatterBox
         }
 
         //If Enter is Pressed, Submit Text
-        private void textBox_PromptInput_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        private async void textBox_PromptInput_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
-                submitPrompt();
+                await submitPrompt();
             }
         }
     }
