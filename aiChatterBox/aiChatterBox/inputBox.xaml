@@ -1,0 +1,77 @@
+﻿<Window x:Class="aiChatterBox.inputBox"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:aiChatterBox"
+        ResizeMode="NoResize"
+        mc:Ignorable="d"
+        Title="Enter Ollama Host Address"
+        Height="375"
+        Width="300"
+        WindowStartupLocation="CenterScreen"
+        Background="#126F85">
+    <Border CornerRadius="0,0,20,20"
+            Background="#126F85">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Row="1">
+                <Label Margin="20,10,20,0"
+                       Foreground="White">Enter Ollama Host:</Label>
+                <Label Margin="20,-5,20,0"
+                       Foreground="White">The original address is "http://localhost:11434"</Label>
+                <TextBox x:Name="textBox_InputNewHost"
+                         Grid.Row="0"
+                         Grid.Column="0"
+                         Height="30"
+                         Background="#79CCD6"
+                         Margin="20,5,20,10"
+                         Style="{StaticResource RoundedTextBox}" />
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Button x:Name="button_SaveConfig"
+                            Content="Save Config"
+                            Margin="20,10,5,10"
+                            Height="50"
+                            Grid.Column="0"
+                            Grid.Row="0"
+                            Click="button_SaveConfig_Click"
+                            Style="{StaticResource RoundedButton}" />
+                    <Button x:Name="button_LoadConfig"
+                            Content="Load Config"
+                            Margin="5,10,20,10"
+                            Grid.Column="1"
+                            Grid.Row="0"
+                            Height="50"
+                            Click="button_LoadConfig_Click"
+                            Style="{StaticResource RoundedButton}" />
+                </Grid>
+                <Button x:Name="button_ChangeDefault"
+                        Content="Change Default Host"
+                        Margin="20,10,20,10"
+                        Height="50"
+                        Click="button_ChangeDefault_Click"
+                        Style="{StaticResource RoundedButton}" />
+                <Button x:Name="button_ConfirmChange"
+                        Content="Confirm"
+                        Margin="20,10,20,10"
+                        Height="50"
+                        Click="button_ConfirmChange_Click"
+                        Style="{StaticResource RoundedButton}" />
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>
