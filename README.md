@@ -1,4 +1,4 @@
-# Glowing Spoon Chatter Box - Frontend for Llama 3
+# ARCIVED: Glowing Spoon Chatter Box - Frontend for Llama 3
 
 ## Application Version: 1.1
 ## Developed by: Sauraav Jayrajh
